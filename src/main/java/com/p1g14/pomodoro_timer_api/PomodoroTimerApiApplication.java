@@ -16,4 +16,9 @@ public class PomodoroTimerApiApplication {
 	public String hello() {
 		return String.format("Hello world!");
 	}
+
+	@GetMapping("/user")
+	public String helloUser() {
+		return String.format("Hello user!");
+	}
 }
