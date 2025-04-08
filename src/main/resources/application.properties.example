@@ -1,0 +1,10 @@
+spring.application.name=pomodoro-timer-api
+server.port=${PORT:8080}
+spring.datasource.url=jdbc:postgresql://pgserver.mau.se:5432/pomodoro
+spring.datasource.username=username
+spring.datasource.password=password
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.hibernate.ddl-auto=none
+spring.jpa.show-sql=true

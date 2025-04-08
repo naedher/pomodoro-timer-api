@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 
 @Entity
 public class Tasks {
+    //this is a quick implementation, but need to match field variables to database later
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long task_id;
