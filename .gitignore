@@ -43,4 +43,5 @@ build/
 ### VS Code ###
 .vscode/
 
+.env
 datasource.properties
