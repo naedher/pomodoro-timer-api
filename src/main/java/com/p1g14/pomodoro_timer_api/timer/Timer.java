@@ -4,16 +4,13 @@ import com.p1g14.pomodoro_timer_api.session.Session;
 import com.p1g14.pomodoro_timer_api.timer_order.TimerOrder;
 import com.p1g14.pomodoro_timer_api.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@Data
-@Builder
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity

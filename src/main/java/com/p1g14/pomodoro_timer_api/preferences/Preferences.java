@@ -2,13 +2,10 @@ package com.p1g14.pomodoro_timer_api.preferences;
 
 import com.p1g14.pomodoro_timer_api.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@Builder
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
