@@ -21,7 +21,7 @@ public class TimerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Timer> getTimerById(Long id) {
+    public ResponseEntity<Timer> getTimerById(@PathVariable Long id) {
         return ResponseEntity.ok(timerService.getTimerById(id));
     }
 
