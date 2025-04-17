@@ -43,7 +43,9 @@ public class TimerService {
 
     private Timer DtoToEntity(TimerDto timerDto) {
         return modelMapper.map(timerDto, Timer.class);
+    }
 
     private TimerDto EntityToDto(Timer timer) {
-        return modelMapper.map(timer, TimerDto.class);
+            return modelMapper.map(timer, TimerDto.class);
+    }
 }
