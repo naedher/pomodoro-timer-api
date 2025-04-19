@@ -43,7 +43,6 @@ public class TimerService {
         Timer timer = timerMapper.fromTimerCreateRequest(timerCreateRequest);
 
         timer.setCreatedAt(LocalDateTime.now());
-        timer.setUpdatedAt(LocalDateTime.now());
 
         Timer createdTimer = timerRepository.save(timer);
         return timerMapper.toTimerDetailsResponse(createdTimer);
