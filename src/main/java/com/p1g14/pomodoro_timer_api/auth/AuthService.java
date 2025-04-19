@@ -28,8 +28,6 @@ public class AuthService {
         User user = new User();
         user.setEmail(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setCreatedAt(LocalDateTime.now());
-        // other props are null for now
         userRepository.save(user);
 
         String jwt = jwtService.generateToken(user);
