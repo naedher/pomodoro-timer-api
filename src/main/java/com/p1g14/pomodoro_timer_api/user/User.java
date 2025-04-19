@@ -32,7 +32,7 @@ public class User {
     private String lastName;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @OneToOne(mappedBy = "user")
     @PrimaryKeyJoinColumn
