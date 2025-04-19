@@ -1,11 +1,10 @@
 package com.p1g14.pomodoro_timer_api.auth;
 
+import com.p1g14.pomodoro_timer_api.auth.dto.LoginRequest;
 import com.p1g14.pomodoro_timer_api.auth.dto.AuthResponse;
 import com.p1g14.pomodoro_timer_api.auth.dto.RegisterRequest;
-import com.p1g14.pomodoro_timer_api.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,5 +22,9 @@ public class AuthController {
         return ResponseEntity.ok(authService.register(request));
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+        return ResponseEntity.ok(authService.login(request));
+    }
 
 }
