@@ -61,6 +61,12 @@ There is no need to install maven manually since we have a maven wrapper named "
 ./mvnw spring-boot:run
 ```
 
+### Spring Security
+This package is part of the wider Spring ecosystem and contains ways to secure spring applications. In this project, it handles the authentication of users and makes sure that users can only access resources owned by them. A brief introduction to how the authentication flow is structured is explained in the [Architecture](https://docs.spring.io/spring-security/reference/servlet/architecture.html) section in the Spring Security [reference docs](https://docs.spring.io/spring-security/reference/index.html). For our purposes, the [Username/Password](https://docs.spring.io/spring-security/reference/servlet/authentication/passwords/index.html) section is also very useful.
+
+### Java JSON Web Tokens (JJWT)
+[JJWT](https://github.com/jwtk/jjwt) is a package that handles the creation and validation of JSON Web Tokens (JWT). These tokens are what is able to securely identify a user over the web. They are basically just JSON encoded into a string by a secret key. If you want to learn more about JWTs there is a good explanation in the JJWT readme under [What is a JSON Web Token?](https://github.com/jwtk/jjwt?tab=readme-ov-file#what-is-a-json-web-token).
+
 
 ## Branching Strategy
 
