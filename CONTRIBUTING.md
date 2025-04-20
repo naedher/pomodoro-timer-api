@@ -162,7 +162,7 @@ DTOs are simple objects used to transfer data to and from the API and the outsid
 They can also be used to handle data transfer between different layers within the API.
 
 #### Example DTO
-```
+```java
 public class TimerDto {
     private Long id;
     private String name;
