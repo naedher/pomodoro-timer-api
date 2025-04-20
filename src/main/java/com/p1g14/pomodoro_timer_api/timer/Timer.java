@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class Timer {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "timer_id")
     private Long id;
 
@@ -25,7 +25,6 @@ public class Timer {
 
     private String name;
 
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdAt;
 
     private Integer workDuration;
