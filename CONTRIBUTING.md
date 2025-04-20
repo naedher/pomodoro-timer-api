@@ -21,6 +21,47 @@ To set up your development environment:
 
 As a prerequisite for this project, Java 17+ is required.
 
+### Local files
+
+To be able to run the program locally you need to create some files.
+#### Config files
+##### Database connection
+1. In `src/main/resources` create a file named "datasource.properties"
+2. Fill out the file according to the following format.
+```properties
+spring.datasource.url=jdbc:postgresql://pgserver.mau.se/_pomodoro
+spring.datasource.username=your-pgadmin-username
+spring.datasource.password=your-pgadmin-password
+```
+
+##### JWT Secret
+1. In `src/main/resources` create a file named "jwt-secrets.properties"
+2. Generate a JWT secret, we used [JWT Secret Key Generator](https://jwtsecret.com/generate)
+3. Fill out the file according to the following format.
+```properties
+jwt.secret=your-secret-key
+```
+
+#### Formatting and Linting
+To make formatting and linting work, each developer needs to edit their `~/.m2/settings.xml` file by adding:
+
+```xml
+<pluginGroups>
+	<pluginGroup>io.spring.javaformat</pluginGroup>
+</pluginGroups>
+```
+
+If you do not have this file, create it and paste this:
+
+```xml
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <pluginGroups>
+	<pluginGroup>io.spring.javaformat</pluginGroup>
+  </pluginGroups>
+</settings>
+```
+
 ## Introduction
 This project aims at building a REST API that handles authentication, data validation and communication with the PostgreSQL database for a larger project [pomodoro-timer](https://github.com/naedher/pomodoro-timer).
 
