@@ -16,7 +16,7 @@ public class TimerService {
 
     private final TimerRepository timerRepository;
 
-    private TimerMapper timerMapper;
+    private final TimerMapper timerMapper;
 
     public List<TimerListResponse> getAllTimers() {
 
