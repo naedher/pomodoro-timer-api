@@ -100,7 +100,7 @@ We use Checkstyle to enforce code style.
 The model or entity layer is responsible for modeling the tables and relationships present in the database. These are used by the repository to map between objects in the API and rows in the database. 
 
 #### Repository 
-The repository layer is responsible for all the operations that directly accesses the database. In our case these operations are abstracted by [JPA](#spring-data-jpa). If you need an operation that strictly does not fit into the responsibility of the service layer then you can create a concrete class that implements `JpaRepository` and use that as the repository.
+The repository layer is responsible for all the operations that directly accesses the database. In our case these operations are abstracted by [JPA](#spring-data-jpa). If you need a custom operation, then define it as a [Query Method](https://docs.spring.io/spring-data/jpa/reference/repositories/query-methods-details.html).
 
 #### Service
 The service layer handles all the business-logic and acts as a layer between the controller and repository. Here most of the data validation happens and the service should throw suitable exceptions to be caught by the controller if something is wrong. The service also handles mapping from DTOs to entities.
