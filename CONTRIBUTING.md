@@ -1,13 +1,18 @@
 # Contributing to [pomodoro-timer-api](https://github.com/naedher/pomodoro-timer-api)
 ## Table of Contents
 
-- [Getting Started](#getting-started)
 - [Introduction](#introduction)
+- [Getting Started](#getting-started)
 - [Tools](#tools)
 - [Branching Strategy](#branching-strategy)
 - [Code Style Guide](#code-style-guide)
 - [Design](#design)
 - [Pull Request Process](#pull-request-process)
+
+## Introduction
+This project aims at building a REST API that handles authentication, data validation and communication with the PostgreSQL database for a larger project [pomodoro-timer](https://github.com/naedher/pomodoro-timer).
+
+This document aims at getting developers wanting to contribute familiar with the tools, guidelines and principles we are using.
 
 ## Getting Started
 
@@ -62,10 +67,6 @@ If you do not have this file, create it and paste this:
 </settings>
 ```
 
-## Introduction
-This project aims at building a REST API that handles authentication, data validation and communication with the PostgreSQL database for a larger project [pomodoro-timer](https://github.com/naedher/pomodoro-timer).
-
-This document aims at getting developers wanting to contribute familiar with the tools, guidelines and principles we are using.
 
 ## Tools
 This section talks about the tools we have chosen and some references to get you started.
