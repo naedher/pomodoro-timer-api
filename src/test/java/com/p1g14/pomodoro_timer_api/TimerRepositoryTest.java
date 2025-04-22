@@ -26,9 +26,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @ActiveProfiles("test")
-//to ensure each test runs in its own transaction and rolls back cleanly.
-@Transactional
-@Rollback
 public class TimerRepositoryTest {
 
     private static final Logger log = LoggerFactory.getLogger(TimerRepositoryTest.class);
