@@ -1,11 +1,13 @@
 package com.p1g14.pomodoro_timer_api.timer;
 
+import com.p1g14.pomodoro_timer_api.exception.ResourceNotFoundException;
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerCreateRequest;
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerDetailsResponse;
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerUpdateRequest;
 import com.p1g14.pomodoro_timer_api.user.User;
 import com.p1g14.pomodoro_timer_api.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -27,7 +29,17 @@ public class TimerService {
     }
 
     public TimerDetailsResponse updateTimer(Long id, TimerUpdateRequest timerUpdateRequest) {
-        Timer timer = timerRepository.getReferenceById(id);
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new UsernameNotFoundException("Invalid credentials"));
+
+        Timer timer = timerRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Timer not found"));
+
+        if (!timer.isOwnedBy(user)) {
+            throw new AccessDeniedException("You do not have permission to access this resource");
+        }
+
         timer = timerMapper.updateTimerEntity(timerUpdateRequest, timer);
         Timer updatedTimer = timerRepository.save(timer);
         return timerMapper.toTimerDetailsResponse(updatedTimer);
