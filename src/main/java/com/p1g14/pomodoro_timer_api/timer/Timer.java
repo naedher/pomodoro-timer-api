@@ -32,4 +32,8 @@ public class Timer {
     private Integer breakDuration;
 
     private Integer pomodoroCount;
+
+    public boolean isOwnedBy(User user) {
+        return this.user.getId().equals(user.getId());
+    }
 }
