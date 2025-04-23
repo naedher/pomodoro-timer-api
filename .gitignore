@@ -46,3 +46,4 @@ build/
 .env
 datasource.properties
 jwt-secrets.properties
+development.properties
