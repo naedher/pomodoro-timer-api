@@ -24,21 +24,14 @@ public class TimerService {
     private final TimerMapper timerMapper;
 
     public TimerDetailsResponse getTimerById(Long id) {
-        Timer timer = timerRepository.getReferenceById(id);
+        User user = getCurrentUser();
+        Timer timer = getTimerValidated(id, user);
         return timerMapper.toTimerDetailsResponse(timer);
     }
 
     public TimerDetailsResponse updateTimer(Long id, TimerUpdateRequest timerUpdateRequest) {
-        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new UsernameNotFoundException("Invalid credentials"));
-
-        Timer timer = timerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Timer not found"));
-
-        if (!timer.isOwnedBy(user)) {
-            throw new AccessDeniedException("You do not have permission to access this resource");
-        }
+        User user = getCurrentUser();
+        Timer timer = getTimerValidated(id, user);
 
         timer = timerMapper.updateTimerEntity(timerUpdateRequest, timer);
         Timer updatedTimer = timerRepository.save(timer);
@@ -46,9 +39,7 @@ public class TimerService {
     }
 
     public TimerDetailsResponse createTimer(TimerCreateRequest timerCreateRequest) {
-        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new UsernameNotFoundException("Invalid credentials"));
+        User user = getCurrentUser();
 
         Timer timer = timerMapper.fromTimerCreateRequest(timerCreateRequest);
         timer.setUser(user);
@@ -60,5 +51,22 @@ public class TimerService {
 
     public void deleteTimer(Long id) {
         timerRepository.deleteById(id);
+    }
+
+    private User getCurrentUser() {
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        return userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new UsernameNotFoundException("Invalid credentials"));
+    }
+
+    private Timer getTimerValidated(Long timerId, User user) {
+        Timer timer = timerRepository.findById(timerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Timer not found"));
+
+        if (!timer.isOwnedBy(user)) {
+            throw new AccessDeniedException("You do not have permission to access this resource");
+        }
+        return timer;
     }
 }
