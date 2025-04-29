@@ -2,7 +2,6 @@ package com.p1g14.pomodoro_timer_api.timer;
 
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerCreateRequest;
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerDetailsResponse;
-import com.p1g14.pomodoro_timer_api.timer.dto.TimerListResponse;
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +17,6 @@ import java.util.List;
 public class TimerController {
 
     private final TimerService timerService;
-
-    @GetMapping
-    public ResponseEntity<List<TimerListResponse>> getAllTimers() {
-        return ResponseEntity.ok(timerService.getAllTimers());
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<TimerDetailsResponse> getTimerById(@PathVariable Long id) {

@@ -2,7 +2,6 @@ package com.p1g14.pomodoro_timer_api.timer;
 
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerCreateRequest;
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerDetailsResponse;
-import com.p1g14.pomodoro_timer_api.timer.dto.TimerListResponse;
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerUpdateRequest;
 import com.p1g14.pomodoro_timer_api.user.User;
 import com.p1g14.pomodoro_timer_api.user.UserRepository;
@@ -12,7 +11,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -22,15 +20,6 @@ public class TimerService {
     private final UserRepository userRepository;
 
     private final TimerMapper timerMapper;
-
-    public List<TimerListResponse> getAllTimers() {
-
-        List<Timer> timers = timerRepository.findAll();
-
-        return timers.stream()
-                .map(timerMapper::toTimerListResponse)
-                .toList();
-    }
 
     public TimerDetailsResponse getTimerById(Long id) {
         Timer timer = timerRepository.getReferenceById(id);
