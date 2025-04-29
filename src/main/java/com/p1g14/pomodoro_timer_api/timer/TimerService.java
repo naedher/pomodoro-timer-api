@@ -65,7 +65,7 @@ public class TimerService {
                 .orElseThrow(() -> new ResourceNotFoundException("Timer not found"));
 
         if (!timer.isOwnedBy(user)) {
-            throw new AccessDeniedException("You do not have permission to access this resource");
+            throw new AccessDeniedException("Resource access denied");
         }
         return timer;
     }
