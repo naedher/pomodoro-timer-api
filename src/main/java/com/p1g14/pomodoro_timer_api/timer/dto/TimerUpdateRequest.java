@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class TimerUpdateRequest {
     private Long id;
-    private String username;
+    private String name;
     private LocalDateTime createdAt;
     private Integer workDuration;
     private Integer breakDuration;
