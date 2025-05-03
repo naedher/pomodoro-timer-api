@@ -1,5 +1,8 @@
 package com.p1g14.pomodoro_timer_api.timer.dto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,10 +15,17 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TimerUpdateRequest {
+    @NotNull
     private Long id;
+    @NotBlank
     private String name;
+    @NotNull
     private LocalDateTime createdAt;
+    @NotNull
+    @Min(value = 5, message = "Work duration must be at least 5 minute")
     private Integer workDuration;
+    @NotNull @Min(value = 1, message = "Break duration must be at least 1 minute")
     private Integer breakDuration;
+    @NotNull @Min(value = 1, message = "Pomodoro count must be at least 1")
     private Integer pomodoroCount;
 }
