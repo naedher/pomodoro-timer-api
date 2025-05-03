@@ -3,6 +3,7 @@ package com.p1g14.pomodoro_timer_api.timer;
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerCreateRequest;
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerDetailsResponse;
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerUpdateRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,12 +28,12 @@ public class TimerController {
     public ResponseEntity<TimerDetailsResponse> updateTimer(@PathVariable Long id, @RequestBody TimerUpdateRequest dto) {
         return ResponseEntity.ok(timerService.updateTimer(id, dto));
     }
-
+    //Spring will automatically trigger bean‐validation when we annotate the @RequestBody parameter with @Valid
     @PostMapping
-    public ResponseEntity<TimerDetailsResponse> createTimer(@RequestBody TimerCreateRequest dto) {
+    public ResponseEntity<TimerDetailsResponse> createTimer(@RequestBody @Valid TimerCreateRequest dto) {
         TimerDetailsResponse createdTimer = timerService.createTimer(dto);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdTimer.getId()).toUri();
-        return ResponseEntity.created(uri).build();
+        URI url = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdTimer.getId()).toUri();
+        return ResponseEntity.created(url).build();
     }
 
     @DeleteMapping("/{id}")
