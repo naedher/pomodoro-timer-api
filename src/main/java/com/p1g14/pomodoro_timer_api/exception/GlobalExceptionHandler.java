@@ -6,9 +6,12 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
@@ -58,5 +61,22 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Map.of("error", "Something went wrong"));
+    }
+    // when dto fails, throw this exception
+    // for each dto validation errors, we use the following Map set as concept,
+    // as we return this error in a structured way, frontend should know how to handle the json response
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String,Object>> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        Map<String, String> fieldErrors = new HashMap<>();
+        ex.getBindingResult().getFieldErrors().forEach(err ->
+                fieldErrors.put(err.getField(), err.getDefaultMessage())
+        );
+        Map<String, Object> body = Map.of(
+                "timestamp",  LocalDateTime.now(),
+                "status",     HttpStatus.BAD_REQUEST.value(),
+                "errors",     fieldErrors
+        );
+        return ResponseEntity.badRequest().body(body);
     }
 }
