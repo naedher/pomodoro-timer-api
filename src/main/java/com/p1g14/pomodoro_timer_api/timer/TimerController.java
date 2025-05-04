@@ -25,7 +25,7 @@ public class TimerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TimerDetailsResponse> updateTimer(@PathVariable Long id, @RequestBody TimerUpdateRequest dto) {
+    public ResponseEntity<TimerDetailsResponse> updateTimer(@PathVariable Long id, @RequestBody @Valid TimerUpdateRequest dto) {
         return ResponseEntity.ok(timerService.updateTimer(id, dto));
     }
     //Spring will automatically trigger bean‐validation when we annotate the @RequestBody parameter with @Valid
