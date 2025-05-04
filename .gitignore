@@ -48,3 +48,4 @@ build/
 datasource.properties
 jwt-secrets.properties
 development.properties
+.DS_Store
