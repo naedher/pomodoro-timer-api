@@ -15,69 +15,46 @@ This project aims at building a REST API that handles authentication, data valid
 This document aims at getting developers wanting to contribute familiar with the tools, guidelines and principles we are using.
 
 ## Getting Started
-
 To set up your development environment:
 
 - Fork the repository and clone your fork:
 ```bash
    git clone https://github.com/naedher/pomodoro-timer-api.git
-   cd project-name
+   cd pomodoro-timer-api
 ```
 
 As a prerequisite for this project, Java 17+ is required.
 
-### Local files
+### Running locally
+To be able to run the program locally you need to create a special file that contains some important information.
 
-To be able to run the program locally you need to create some files.
-#### Config files
-##### Database connection
-1. In `src/main/resources` create a file named "datasource.properties"
+1. In `src/main/resources` create a file named "development.properties"
 2. Fill out the file according to the following format.
 ```properties
 spring.datasource.url=jdbc:postgresql://pgserver.mau.se/_pomodoro
 spring.datasource.username=your-pgadmin-username
 spring.datasource.password=your-pgadmin-password
+
+jwt.secret=your-secret-key
 ```
 
-##### JWT Secret
-1. In `src/main/resources` create a file named "jwt-secrets.properties"
-2. Generate a JWT secret, we used [JWT Secret Key Generator](https://jwtsecret.com/generate)
-3. Fill out the file according to the following format.
+##### How do I get a JWT Secret?
+1. Run the `KeyGenerator` file located in the `config` folder to generate a JWT secret.
+2. Replace `your-secret-key` in the `development.properties` file with your generated token
 ```properties
 jwt.secret=your-secret-key
 ```
 
-#### Formatting and Linting
-To make formatting and linting work, each developer needs to edit their `~/.m2/settings.xml` file by adding:
-
-```xml
-<pluginGroups>
-	<pluginGroup>io.spring.javaformat</pluginGroup>
-</pluginGroups>
-```
-
-If you do not have this file, create it and paste this:
-
-```xml
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
-  <pluginGroups>
-	<pluginGroup>io.spring.javaformat</pluginGroup>
-  </pluginGroups>
-</settings>
-```
-
-
 ## Tools
 This section talks about the tools we have chosen and some references to get you started.
 ### Spring Boot
-Spring is the main framework we are using and it handles most of the application layer by instantiating objects, injecting dependencies and setting up the whole MVC pipeline.
+Spring is the main framework we are using, and it handles most of the application layer by instantiating objects, injecting dependencies and setting up the whole MVC pipeline.
 To learn more about Spring Boot, check out the Spring Boot [documentation](https://docs.spring.io/spring-boot/index.html) or to just get a taste, check out [this quickstart guide](https://spring.io/guides/gs/rest-service). For a more in depth guide, check out the [Spring REST](https://spring.io/guides/tutorials/rest) tutorial. Also, Baeldung has an excellent series on [Rest With Spring](https://www.baeldung.com/rest-with-spring-series).
 
 The full Spring Boot API can be found [here](https://docs.spring.io/spring-boot/api/java/index.html).
 
 ### Spring Data JPA
-This is the data access layer of the application and it handles the repository layer and sending queries to the database. Spring Data JPA automatically wires this up for us and makes the communication to the database completely transparent through the `JpaRepository` interface.
+This is the data access layer of the application, and it handles the repository layer and sending queries to the database. Spring Data JPA automatically wires this up for us and makes the communication to the database completely transparent through the `JpaRepository` interface.
 
 To learn more about Spring Data JPA, check out the Spring Data [documentation](https://docs.spring.io/spring-data/jpa/reference/). There is also the Baeldung series on [Spring Data](https://www.baeldung.com/spring-data).
 
@@ -91,11 +68,11 @@ To learn more, check out the Lombok [documentation](https://projectlombok.org/fe
 2. `@ToString` can cause stack overflows in bidirectional relationships.
 3. `@Data` includes both `@EqualsAndHashCode` and `@ToString`.
 4. Entities created with `@Builder` can bypass validation and lifecycle events.
-5. Adding multiple constructors to a `@Component` or any of it's inheritors such as `@Sevice` or `@Controller` can break Spring's dependency injection. Make sure there is only `@RequiredArgsConstructor` on these classes or annotate dependencies with `@Autowired`.
+5. Adding multiple constructors to a `@Component` or any of its inheritors such as `@Sevice` or `@Controller` can break Spring's dependency injection. Make sure there is only `@RequiredArgsConstructor` on these classes or annotate dependencies with `@Autowired`.
 
 Using `@Data` and `@Builder` is acceptable for non-entity classes such as DTOs.
 ### Maven
-Maven is the main build tool of this project. It helps us manage project builds, compile code and include dependencies through a configuration file called `pom.xml`. 
+Maven is the main build tool of this project. It helps us manage project builds, compile code and include dependencies through a configuration file called `pom.xml`.
 There is no need to install maven manually since we have a maven wrapper named "./mvnw".
 
 - To run the program type:
@@ -111,7 +88,6 @@ This package is part of the wider Spring ecosystem and contains ways to secure s
 
 
 ## Branching Strategy
-
 We follow [GitHub Flow](https://githubflow.github.io/):
 
 1. Create a new branch off `main`:
@@ -129,25 +105,14 @@ Each PR should be small, focused, and ideally linked to an issue.
 ## Code Style Guide
 We use the [Spring Framework Code Style](https://github.com/spring-io/spring-javaformat) conventions.
 ### Linting and Formatting
-
-We use Checkstyle to enforce code style.
-
-- Run the formatter before committing:
-```bash
-./mvnw spring-javaformat:apply
-```
-- Run the linter to validate the code style:
-```bash
-./mvnw spring-javaformat:validate
-```
-
+- TODO
 
 ## Design
 ### MVC Structure
 #### Model
-The model or entity layer is responsible for modeling the tables and relationships present in the database. These are used by the repository to map between objects in the API and rows in the database. 
+The model or entity layer is responsible for modeling the tables and relationships present in the database. These are used by the repository to map between objects in the API and rows in the database.
 
-#### Repository 
+#### Repository
 The repository layer is responsible for all the operations that directly accesses the database. In our case these operations are abstracted by [JPA](#spring-data-jpa). If you need a custom operation, then define it as a [Query Method](https://docs.spring.io/spring-data/jpa/reference/repositories/query-methods-details.html).
 
 #### Service
@@ -158,7 +123,7 @@ The controller defines all the endpoints that are available to the outside world
 It also handles sending suitable responses depending on what happens in the other layers. Through the use of exceptions the controller can know how to respond.
 
 ### Data Transfer Objects (DTO)
-DTOs are simple objects used to transfer data to and from the API and the outside world. 
+DTOs are simple objects used to transfer data to and from the API and the outside world.
 They can also be used to handle data transfer between different layers within the API.
 
 #### Example DTO
@@ -188,7 +153,7 @@ Ex.
 `SessionHistoryResponse`
 ##### Internal
 ###### Single DTO
- If there is only a single DTO associated with an entity it is okay to name it after the entity.
+If there is only a single DTO associated with an entity it is okay to name it after the entity.
 `TimerDto`, `SessionDto` etc.
 ###### Multiple DTOs
 If there are multiple DTOs used internally related to a single entity then name it after what it contains, similar to outbound DTOs.
@@ -201,4 +166,3 @@ To have good separation of concerns regarding DTOs we can also create an explici
 
 ## Pull Request Process
 To learn more about how to handle the pull request process, read the [Google Engineering Practices](https://google.github.io/eng-practices/).
-
