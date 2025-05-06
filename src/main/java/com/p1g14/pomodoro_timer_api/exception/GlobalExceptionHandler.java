@@ -58,6 +58,7 @@ public class GlobalExceptionHandler {
     // Fallback handler for unexpected errors
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGeneralException(Exception ex) {
+        ex.printStackTrace();
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Map.of("error", "Something went wrong"));
