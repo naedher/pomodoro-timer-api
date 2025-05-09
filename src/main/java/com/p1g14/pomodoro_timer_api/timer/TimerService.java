@@ -3,7 +3,6 @@ package com.p1g14.pomodoro_timer_api.timer;
 import com.p1g14.pomodoro_timer_api.exception.ResourceNotFoundException;
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerCreateRequest;
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerDetailsResponse;
-import com.p1g14.pomodoro_timer_api.timer.dto.TimerListResponse;
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerUpdateRequest;
 import com.p1g14.pomodoro_timer_api.user.User;
 import com.p1g14.pomodoro_timer_api.user.UserRepository;
@@ -26,11 +25,11 @@ public class TimerService {
     private final TimerMapper timerMapper;
 
 
-    public List<TimerListResponse> getUserTimers() {
+    public List<TimerDetailsResponse> getUserTimers() {
         User user = getCurrentUser();
 
         return timerRepository.findByUserEmail(user.getEmail())
-                .stream().map(timerMapper::toTimerListResponse)
+                .stream().map(timerMapper::toTimerDetailsResponse)
                 .toList();
     }
 

@@ -2,7 +2,6 @@ package com.p1g14.pomodoro_timer_api.timer;
 
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerCreateRequest;
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerDetailsResponse;
-import com.p1g14.pomodoro_timer_api.timer.dto.TimerListResponse;
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerUpdateRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,7 @@ public class TimerController {
     private final TimerService timerService;
 
     @GetMapping
-    public ResponseEntity<List<TimerListResponse>> getUserTimers() {
+    public ResponseEntity<List<TimerDetailsResponse>> getUserTimers() {
         return ResponseEntity.ok(timerService.getUserTimers());
     }
 
