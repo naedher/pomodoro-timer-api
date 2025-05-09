@@ -2,7 +2,6 @@ package com.p1g14.pomodoro_timer_api.timer;
 
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerCreateRequest;
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerDetailsResponse;
-import com.p1g14.pomodoro_timer_api.timer.dto.TimerListResponse;
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -20,10 +19,6 @@ public class TimerMapper {
 
     public TimerDetailsResponse toTimerDetailsResponse(Timer timer) {
         return modelMapper.map(timer, TimerDetailsResponse.class);
-    }
-
-    public TimerListResponse toTimerListResponse(Timer timer) {
-        return modelMapper.map(timer, TimerListResponse.class);
     }
 
     public Timer fromTimerUpdateRequest(TimerUpdateRequest timerUpdateRequest, Timer timer) {

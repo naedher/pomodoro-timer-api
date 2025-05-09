@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -22,6 +23,15 @@ public class TimerService {
     private final UserRepository userRepository;
 
     private final TimerMapper timerMapper;
+
+
+    public List<TimerDetailsResponse> getUserTimers() {
+        User user = getCurrentUser();
+
+        return timerRepository.findByUserEmail(user.getEmail())
+                .stream().map(timerMapper::toTimerDetailsResponse)
+                .toList();
+    }
 
     public TimerDetailsResponse getTimerById(Long id) {
         User user = getCurrentUser();
