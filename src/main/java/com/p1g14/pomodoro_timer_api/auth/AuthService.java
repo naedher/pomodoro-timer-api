@@ -4,6 +4,7 @@ import com.p1g14.pomodoro_timer_api.auth.dto.LoginRequest;
 import com.p1g14.pomodoro_timer_api.auth.dto.AuthResponse;
 import com.p1g14.pomodoro_timer_api.auth.dto.RegisterRequest;
 import com.p1g14.pomodoro_timer_api.config.JwtService;
+import com.p1g14.pomodoro_timer_api.exception.EmailAlreadyExistsException;
 import com.p1g14.pomodoro_timer_api.user.User;
 import com.p1g14.pomodoro_timer_api.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class AuthService {
 
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new RuntimeException("Invalid credentials");
+            throw new EmailAlreadyExistsException("User with email already exists");
         }
 
         User user = new User();
