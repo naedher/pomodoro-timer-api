@@ -29,7 +29,9 @@ public class Timer {
 
     private Integer workDuration;
 
-    private Integer breakDuration;
+    private Integer shortBreakDuration;
+
+    private Integer longBreakDuration;
 
     private Integer pomodoroCount;
 

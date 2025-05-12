@@ -24,8 +24,10 @@ public class TimerUpdateRequest {
     @NotNull
     @Min(value = 5, message = "Work duration must be at least 5 minute")
     private Integer workDuration;
-    @NotNull @Min(value = 1, message = "Break duration must be at least 1 minute")
-    private Integer breakDuration;
+    @NotNull @Min(value = 1, message = "Short break duration must be at least 1 minute")
+    private Integer shortBreakDuration;
+    @NotNull @Min(value = 1, message = "Long break duration must be at least 1 minute")
+    private Integer longBreakDuration;
     @NotNull @Min(value = 1, message = "Pomodoro count must be at least 1")
     private Integer pomodoroCount;
 }
