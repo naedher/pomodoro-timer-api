@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+/**
+ * Service class for managing Timer-related business logic.
+ */
 @RequiredArgsConstructor
 @Service
 public class TimerService {
@@ -23,12 +26,23 @@ public class TimerService {
 
     private final TimerMapper timerMapper;
 
+    /**
+     * Retrieve a timer by ID.
+     * @param id the ID of the timer
+     * @return the timer if found
+     */
     public TimerDetailsResponse getTimerById(Long id) {
         User user = getCurrentUser();
         Timer timer = getTimerValidated(id, user);
         return timerMapper.toTimerDetailsResponse(timer);
     }
 
+    /**
+     * Update the timer of ID with the provided data.
+     * @param id the ID of the timer
+     * @param timerUpdateRequest the timer data to update
+     * @return a DTO containing the data of the updated timer
+     */
     public TimerDetailsResponse updateTimer(Long id, TimerUpdateRequest timerUpdateRequest) {
         User user = getCurrentUser();
         Timer timer = getTimerValidated(id, user);
@@ -38,6 +52,11 @@ public class TimerService {
         return timerMapper.toTimerDetailsResponse(updatedTimer);
     }
 
+    /**
+     * Create a new timer and save it.
+     * @param timerCreateRequest the data of the new timer
+     * @return a DTO containing the data of the created timer
+     */
     public TimerDetailsResponse createTimer(TimerCreateRequest timerCreateRequest) {
         User user = getCurrentUser();
 
@@ -49,10 +68,19 @@ public class TimerService {
         return timerMapper.toTimerDetailsResponse(createdTimer);
     }
 
+    /**
+     * Delete the timer of ID.
+     * @param id the ID of the timer
+     */
     public void deleteTimer(Long id) {
         timerRepository.deleteById(id);
     }
 
+    /**
+     * Get the current user email from the security context and return the corresponding user
+     * @return the currently logged-in user
+     * @throws UsernameNotFoundException if the user email has no corresponding user
+     */
     private User getCurrentUser() {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -60,6 +88,14 @@ public class TimerService {
                 .orElseThrow(() -> new UsernameNotFoundException("Invalid credentials"));
     }
 
+    /**
+     * Get the timer of ID and ensure that it is owned by the user
+     * @param timerId the ID of the timer
+     * @param user the user that owns the timer
+     * @return the timer of ID
+     * @throws ResourceNotFoundException if timer of ID does not exist
+     * @throws AccessDeniedException if the timer is not owned by user
+     */
     private Timer getTimerValidated(Long timerId, User user) {
         Timer timer = timerRepository.findById(timerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Timer not found"));
