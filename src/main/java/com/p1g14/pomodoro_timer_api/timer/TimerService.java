@@ -6,6 +6,9 @@ import com.p1g14.pomodoro_timer_api.timer.dto.TimerDetailsResponse;
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerUpdateRequest;
 import com.p1g14.pomodoro_timer_api.user.User;
 import com.p1g14.pomodoro_timer_api.user.UserRepository;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
@@ -22,11 +26,12 @@ public class TimerService {
     private final UserRepository userRepository;
 
     private final TimerMapper timerMapper;
+    private final Validator validator;
 
     public TimerDetailsResponse getTimerById(Long id) {
         User user = getCurrentUser();
         Timer timer = getTimerValidated(id, user);
-        return timerMapper.toTimerDetailsResponse(timer);
+        return validateDetailsResponse(timerMapper.toTimerDetailsResponse(timer));
     }
 
     public TimerDetailsResponse updateTimer(Long id, TimerUpdateRequest timerUpdateRequest) {
@@ -35,7 +40,7 @@ public class TimerService {
 
         timer = timerMapper.updateTimerEntity(timerUpdateRequest, timer);
         Timer updatedTimer = timerRepository.save(timer);
-        return timerMapper.toTimerDetailsResponse(updatedTimer);
+        return validateDetailsResponse(timerMapper.toTimerDetailsResponse(updatedTimer));
     }
 
     public TimerDetailsResponse createTimer(TimerCreateRequest timerCreateRequest) {
@@ -46,7 +51,7 @@ public class TimerService {
         timer.setCreatedAt(LocalDateTime.now());
 
         Timer createdTimer = timerRepository.save(timer);
-        return timerMapper.toTimerDetailsResponse(createdTimer);
+        return validateDetailsResponse(timerMapper.toTimerDetailsResponse(createdTimer));
     }
 
     public void deleteTimer(Long id) {
@@ -68,5 +73,13 @@ public class TimerService {
             throw new AccessDeniedException("Resource access denied");
         }
         return timer;
+    }
+
+    private TimerDetailsResponse validateDetailsResponse(TimerDetailsResponse response) {
+        Set<ConstraintViolation<TimerDetailsResponse>> violations = validator.validate(response);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
+        return response;
     }
 }
