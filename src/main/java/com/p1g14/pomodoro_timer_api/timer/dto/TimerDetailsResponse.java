@@ -20,10 +20,16 @@ public class TimerDetailsResponse {
     private String name;
     @NotNull
     private LocalDateTime createdAt;
+
     @NotNull
     private Integer workDuration;
     @NotNull
     private Integer breakDuration;
     @NotNull
+
+    private Integer workDuration;
+    private Integer shortBreakDuration;
+    private Integer longBreakDuration;
+
     private Integer pomodoroCount;
 }

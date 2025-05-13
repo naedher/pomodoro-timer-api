@@ -19,6 +19,11 @@ public class TimerController {
 
     private final TimerService timerService;
 
+    @GetMapping
+    public ResponseEntity<List<TimerDetailsResponse>> getUserTimers() {
+        return ResponseEntity.ok(timerService.getUserTimers());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<TimerDetailsResponse> getTimerById(@PathVariable Long id) {
         return ResponseEntity.ok(timerService.getTimerById(id));
