@@ -20,8 +20,6 @@ public class TimerUpdateRequest {
     @NotBlank
     private String name;
     @NotNull
-    private LocalDateTime createdAt;
-    @NotNull
     @Min(value = 5, message = "Work duration must be at least 5 minute")
     private Integer workDuration;
     @NotNull @Min(value = 1, message = "Break duration must be at least 1 minute")
