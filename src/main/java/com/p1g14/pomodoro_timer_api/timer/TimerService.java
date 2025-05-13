@@ -60,6 +60,9 @@ public class TimerService {
     }
 
     public void deleteTimer(Long id) {
+        User user = getCurrentUser();
+        getTimerValidated(id, user);
+
         timerRepository.deleteById(id);
     }
 
