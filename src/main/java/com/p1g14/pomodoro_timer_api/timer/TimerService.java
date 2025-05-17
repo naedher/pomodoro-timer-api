@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Service class for managing Timer-related business logic.
@@ -25,6 +26,19 @@ public class TimerService {
     private final UserRepository userRepository;
 
     private final TimerMapper timerMapper;
+
+
+    /**
+     * Retrieve a list of timers owned by the current user
+     * @return a list of timers
+     */
+    public List<TimerDetailsResponse> getUserTimers() {
+        User user = getCurrentUser();
+
+        return timerRepository.findByUserEmail(user.getEmail())
+                .stream().map(timerMapper::toTimerDetailsResponse)
+                .toList();
+    }
 
     /**
      * Retrieve a timer by ID.
@@ -73,6 +87,9 @@ public class TimerService {
      * @param id the ID of the timer
      */
     public void deleteTimer(Long id) {
+        User user = getCurrentUser();
+        getTimerValidated(id, user);
+
         timerRepository.deleteById(id);
     }
 

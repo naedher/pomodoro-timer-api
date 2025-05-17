@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 /**
  * REST controller for managing timers.
@@ -20,6 +21,15 @@ import java.net.URI;
 public class TimerController {
 
     private final TimerService timerService;
+
+    /**
+     * Retrieve a list of all timers owned by the current user
+     * @return HTTP 200 OK response containing a list of timer details
+     */
+    @GetMapping
+    public ResponseEntity<List<TimerDetailsResponse>> getUserTimers() {
+        return ResponseEntity.ok(timerService.getUserTimers());
+    }
 
     /**
      * Retrieve a timer by ID.

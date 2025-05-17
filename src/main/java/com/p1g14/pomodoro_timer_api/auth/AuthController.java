@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  * REST controller for managing authentication.
  */
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
 

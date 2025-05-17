@@ -15,8 +15,8 @@ public class TimerDetailsResponse {
     private Long id;
     private String name;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
     private Integer workDuration;
-    private Integer breakDuration;
+    private Integer shortBreakDuration;
+    private Integer longBreakDuration;
     private Integer pomodoroCount;
 }
