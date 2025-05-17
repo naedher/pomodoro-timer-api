@@ -6,6 +6,9 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+/**
+ * Represents a timer in the system.
+ */
 @Getter
 @Setter
 @AllArgsConstructor
