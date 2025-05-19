@@ -25,9 +25,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Service class for managing User-related business logic.
- */
 @RequiredArgsConstructor
 @Service
 public class AuthService {
@@ -39,12 +36,6 @@ public class AuthService {
     private final TimerRepository timerRepository;
     private final TimerMapper timerMapper;
 
-    /**
-     * Register a new user
-     * @param request the credentials of the user
-     * @return the JWT token used to authenticate the user
-     * @throws RuntimeException if a user with email already exists
-     */
     @Transactional
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
@@ -62,11 +53,6 @@ public class AuthService {
         return new AuthResponse(jwt);
     }
 
-    /**
-     * Log in using a users credentials
-     * @param request the credentials of the user
-     * @return the JWT token used to authenticate the user
-     */
     public AuthResponse login(LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -80,12 +66,11 @@ public class AuthService {
 
         String jwt = jwtService.generateToken(user);
         return new AuthResponse(jwt);
-    }
+        /**
+         * Creates three standard Pomodoro timers for the given user.
+         */
 
-    /**
-     * Create default timers for a user
-     * @param user the user to create timers for
-     */
+    }
     public void setDefaultTimers (User user){
         List<TimerCreateRequest> presets = List.of(
                 TimerCreateRequest.builder()
