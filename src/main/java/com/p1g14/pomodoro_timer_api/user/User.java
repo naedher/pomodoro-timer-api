@@ -11,6 +11,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Represents a user in the system.
+ */
 @Getter
 @Setter
 @AllArgsConstructor
@@ -33,6 +36,11 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<Timer> timers;
 
+    /**
+     * Returns the authorities granted to the user.
+     * Currently, all users are assigned the USER role.
+     * @return a collection of granted authorities for the user
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(Role.USER.name())); // If more roles are needed, create a role property and save to the user.
