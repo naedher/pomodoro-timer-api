@@ -39,19 +39,19 @@ public class TimerService {
         return timerMapper.toTimerDetailsResponse(timer);
     }
 
-    public TimerDetailsResponse updateTimer(Long id, TimerUpdateRequest timerUpdateRequest) {
+    public TimerDetailsResponse updateTimer(Long id, TimerUpdateRequest request) {
         User user = getCurrentUser();
         Timer timer = getTimerValidated(id, user);
 
-        timer = timerMapper.updateTimerEntity(timerUpdateRequest, timer);
+        timer = timerMapper.updateTimerEntity(request, timer);
         Timer updatedTimer = timerRepository.save(timer);
         return timerMapper.toTimerDetailsResponse(updatedTimer);
     }
 
-    public TimerDetailsResponse createTimer(TimerCreateRequest timerCreateRequest) {
+    public TimerDetailsResponse createTimer(TimerCreateRequest request) {
         User user = getCurrentUser();
 
-        Timer timer = timerMapper.fromTimerCreateRequest(timerCreateRequest);
+        Timer timer = timerMapper.fromTimerCreateRequest(request);
         timer.setUser(user);
         timer.setCreatedAt(LocalDateTime.now());
 

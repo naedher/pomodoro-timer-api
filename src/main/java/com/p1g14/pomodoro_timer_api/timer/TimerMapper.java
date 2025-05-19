@@ -13,20 +13,20 @@ public class TimerMapper {
 
     private final ModelMapper modelMapper;
 
-    public Timer fromTimerCreateRequest(TimerCreateRequest timerCreateRequest) {
-        return modelMapper.map(timerCreateRequest, Timer.class);
+    public Timer fromTimerCreateRequest(TimerCreateRequest request) {
+        return modelMapper.map(request, Timer.class);
     }
 
     public TimerDetailsResponse toTimerDetailsResponse(Timer timer) {
         return modelMapper.map(timer, TimerDetailsResponse.class);
     }
 
-    public Timer fromTimerUpdateRequest(TimerUpdateRequest timerUpdateRequest, Timer timer) {
-        return modelMapper.map(timerUpdateRequest, Timer.class);
+    public Timer fromTimerUpdateRequest(TimerUpdateRequest request, Timer timer) {
+        return modelMapper.map(request, Timer.class);
     }
 
-    public Timer updateTimerEntity(TimerUpdateRequest timerUpdateRequest, Timer timer) {
-        modelMapper.map(timerUpdateRequest, timer);
+    public Timer updateTimerEntity(TimerUpdateRequest request, Timer timer) {
+        modelMapper.map(request, timer);
         return timer;
     }
 }
