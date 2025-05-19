@@ -6,6 +6,7 @@ import com.p1g14.pomodoro_timer_api.timer.dto.TimerDetailsResponse;
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerUpdateRequest;
 import com.p1g14.pomodoro_timer_api.user.User;
 import com.p1g14.pomodoro_timer_api.user.UserRepository;
+import com.p1g14.pomodoro_timer_api.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,7 +24,7 @@ import java.util.List;
 public class TimerService {
 
     private final TimerRepository timerRepository;
-    private final UserRepository userRepository;
+    private final Validator validator;
 
     private final TimerMapper timerMapper;
 
@@ -33,7 +34,7 @@ public class TimerService {
      * @return a list of timers
      */
     public List<TimerDetailsResponse> getUserTimers() {
-        User user = getCurrentUser();
+        User user = validator.getCurrentUser();
 
         return timerRepository.findByUserEmail(user.getEmail())
                 .stream().map(timerMapper::toTimerDetailsResponse)
@@ -46,10 +47,10 @@ public class TimerService {
      * @return the timer if found
      */
     public TimerDetailsResponse getTimerById(Long id) {
-        User user = getCurrentUser();
-        Timer timer = getTimerValidated(id, user);
+        Timer timer = validator.getTimerValidated(id);
         return timerMapper.toTimerDetailsResponse(timer);
     }
+
 
     /**
      * Update the timer of ID with the provided data.
@@ -61,7 +62,11 @@ public class TimerService {
         User user = getCurrentUser();
         Timer timer = getTimerValidated(id, user);
 
-        timer = timerMapper.updateTimerEntity(timerUpdateRequest, timer);
+   User user = getCurrentUser();
+   Timer timer = validator.getTimerValidated(id, user);
+
+
+        timer = timerMapper.updateTimerEntity(request, timer);
         Timer updatedTimer = timerRepository.save(timer);
         return timerMapper.toTimerDetailsResponse(updatedTimer);
     }
@@ -74,7 +79,7 @@ public class TimerService {
     public TimerDetailsResponse createTimer(TimerCreateRequest timerCreateRequest) {
         User user = getCurrentUser();
 
-        Timer timer = timerMapper.fromTimerCreateRequest(timerCreateRequest);
+        Timer timer = timerMapper.fromTimerCreateRequest(request);
         timer.setUser(user);
         timer.setCreatedAt(LocalDateTime.now());
 
@@ -87,11 +92,12 @@ public class TimerService {
      * @param id the ID of the timer
      */
     public void deleteTimer(Long id) {
-        User user = getCurrentUser();
-        getTimerValidated(id, user);
+        // call to raise exceptions
+        validator.getTimerValidated(id);
 
         timerRepository.deleteById(id);
     }
+
 
     /**
      * Get the current user email from the security context and return the corresponding user

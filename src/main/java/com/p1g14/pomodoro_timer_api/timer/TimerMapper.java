@@ -16,6 +16,7 @@ public class TimerMapper {
 
     private final ModelMapper modelMapper;
 
+
     /**
      * Convert a {@link TimerCreateRequest} to a {@link Timer} entity
      * @param timerCreateRequest the request object containing timer creation details
@@ -23,6 +24,10 @@ public class TimerMapper {
      */
     public Timer fromTimerCreateRequest(TimerCreateRequest timerCreateRequest) {
         return modelMapper.map(timerCreateRequest, Timer.class);
+
+    public Timer fromTimerCreateRequest(TimerCreateRequest request) {
+        return modelMapper.map(request, Timer.class);
+
     }
 
     /**
@@ -34,6 +39,7 @@ public class TimerMapper {
         return modelMapper.map(timer, TimerDetailsResponse.class);
     }
 
+
     /**
      * Map the fields of a {@link TimerUpdateRequest} onto a {@link Timer} entity
      * @param timerUpdateRequest the {@link TimerUpdateRequest}
@@ -42,6 +48,14 @@ public class TimerMapper {
      */
     public Timer updateTimerEntity(TimerUpdateRequest timerUpdateRequest, Timer timer) {
         modelMapper.map(timerUpdateRequest, timer);
+
+    public Timer fromTimerUpdateRequest(TimerUpdateRequest request, Timer timer) {
+        return modelMapper.map(request, Timer.class);
+    }
+
+    public Timer updateTimerEntity(TimerUpdateRequest request, Timer timer) {
+        modelMapper.map(request, timer);
+
         return timer;
     }
 }
