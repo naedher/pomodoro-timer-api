@@ -11,6 +11,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+/**
+ * Validation class that contains utility methods used for validation of the user
+ */
 @RequiredArgsConstructor
 @Component
 public class Validator {
@@ -18,6 +21,11 @@ public class Validator {
     private final TimerRepository timerRepository;
     private final UserRepository userRepository;
 
+    /**
+     * Get the current user email from the security context and return the corresponding user
+     * @return the currently logged-in user
+     * @throws UsernameNotFoundException if the user email has no corresponding user
+     */
     public User getCurrentUser() {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -25,6 +33,14 @@ public class Validator {
                 .orElseThrow(() -> new UsernameNotFoundException("Invalid credentials"));
     }
 
+    /**
+     * Get the timer of ID and ensure that it is owned by the user
+     * @param timerId the ID of the timer
+     * @param user the user that owns the timer
+     * @return the timer of ID
+     * @throws ResourceNotFoundException if timer of ID does not exist
+     * @throws AccessDeniedException if the timer is not owned by user
+     */
     public Timer getTimerValidated(Long timerId, User user) {
         Timer timer = timerRepository.findById(timerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Timer not found"));
@@ -35,6 +51,11 @@ public class Validator {
         return timer;
     }
 
+    /**
+     * Get the timer of ID and ensure that it is owned by the current user
+     * @param timerId the ID of the timer
+     * @return the timer of ID
+     */
     public Timer getTimerValidated(Long timerId) {
         User user = getCurrentUser();
         return getTimerValidated(timerId, user);
