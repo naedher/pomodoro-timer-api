@@ -6,7 +6,6 @@ import com.p1g14.pomodoro_timer_api.timer.dto.TimerDetailsResponse;
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerUpdateRequest;
 import com.p1g14.pomodoro_timer_api.user.User;
 import com.p1g14.pomodoro_timer_api.user.UserRepository;
-import com.p1g14.pomodoro_timer_api.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,13 +20,13 @@ import java.util.List;
 public class TimerService {
 
     private final TimerRepository timerRepository;
-    private final Validator validator;
+    private final UserRepository userRepository;
 
     private final TimerMapper timerMapper;
 
 
     public List<TimerDetailsResponse> getUserTimers() {
-        User user = validator.getCurrentUser();
+        User user = getCurrentUser();
 
         return timerRepository.findByUserEmail(user.getEmail())
                 .stream().map(timerMapper::toTimerDetailsResponse)
@@ -35,19 +34,21 @@ public class TimerService {
     }
 
     public TimerDetailsResponse getTimerById(Long id) {
-        Timer timer = validator.getTimerValidated(id);
+        User user = getCurrentUser();
+        Timer timer = getTimerValidated(id, user);
         return timerMapper.toTimerDetailsResponse(timer);
     }
 
-   User user = getCurrentUser();
-   Timer timer = validator.getTimerValidated(id, user);
+    public TimerDetailsResponse updateTimer(Long id, TimerUpdateRequest request) {
+        User user = getCurrentUser();
+        Timer timer = getTimerValidated(id, user);
 
         timer = timerMapper.updateTimerEntity(request, timer);
         Timer updatedTimer = timerRepository.save(timer);
         return timerMapper.toTimerDetailsResponse(updatedTimer);
     }
 
-    public TimerDetailsResponse createTimer(TimerCreateRequest timerCreateRequest) {
+    public TimerDetailsResponse createTimer(TimerCreateRequest request) {
         User user = getCurrentUser();
 
         Timer timer = timerMapper.fromTimerCreateRequest(request);
@@ -59,10 +60,26 @@ public class TimerService {
     }
 
     public void deleteTimer(Long id) {
-        // call to raise exceptions
-        validator.getTimerValidated(id);
+        User user = getCurrentUser();
+        getTimerValidated(id, user);
 
         timerRepository.deleteById(id);
     }
 
+    private User getCurrentUser() {
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        return userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new UsernameNotFoundException("Invalid credentials"));
+    }
+
+    private Timer getTimerValidated(Long timerId, User user) {
+        Timer timer = timerRepository.findById(timerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Timer not found"));
+
+        if (!timer.isOwnedBy(user)) {
+            throw new AccessDeniedException("Resource access denied");
+        }
+        return timer;
+    }
 }
