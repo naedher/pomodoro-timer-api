@@ -1,16 +1,11 @@
 package com.p1g14.pomodoro_timer_api.timer;
 
-import com.p1g14.pomodoro_timer_api.exception.ResourceNotFoundException;
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerCreateRequest;
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerDetailsResponse;
 import com.p1g14.pomodoro_timer_api.timer.dto.TimerUpdateRequest;
 import com.p1g14.pomodoro_timer_api.user.User;
-import com.p1g14.pomodoro_timer_api.user.UserRepository;
 import com.p1g14.pomodoro_timer_api.validation.Validator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -39,18 +34,19 @@ public class TimerService {
         return timerMapper.toTimerDetailsResponse(timer);
     }
 
-   User user = getCurrentUser();
-   Timer timer = validator.getTimerValidated(id, user);
-
-        timer = timerMapper.updateTimerEntity(request, timer);
+    public TimerDetailsResponse updateTimer(Long id, TimerUpdateRequest timerUpdateRequest) {
+        User user = validator.getCurrentUser();
+        Timer timer = validator.getTimerValidated(id, user);
+        
+        timer = timerMapper.updateTimerEntity(timerUpdateRequest, timer);
         Timer updatedTimer = timerRepository.save(timer);
         return timerMapper.toTimerDetailsResponse(updatedTimer);
     }
 
     public TimerDetailsResponse createTimer(TimerCreateRequest timerCreateRequest) {
-        User user = getCurrentUser();
+        User user = validator.getCurrentUser();
 
-        Timer timer = timerMapper.fromTimerCreateRequest(request);
+        Timer timer = timerMapper.fromTimerCreateRequest(timerCreateRequest);
         timer.setUser(user);
         timer.setCreatedAt(LocalDateTime.now());
 
