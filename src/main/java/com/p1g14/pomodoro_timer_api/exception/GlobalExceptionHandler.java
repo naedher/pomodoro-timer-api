@@ -38,23 +38,6 @@ public class GlobalExceptionHandler {
                 .body(Map.of("error", "Invalid email or password"));
     }
 
-    @ExceptionHandler(ChangeSetPersister.NotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleNotFound(ChangeSetPersister.NotFoundException ex) {
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(new ErrorResponse() {
-                    @Override
-                    public HttpStatusCode getStatusCode() {
-                        return null;
-                    }
-
-                    @Override
-                    public ProblemDetail getBody() {
-                        return null;
-                    }
-                });
-    }
-
     /**
      * Handles cases where a user cannot be found by username.
      *
