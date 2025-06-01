@@ -32,6 +32,9 @@ public class TimerPreference {
     @Column(name = "alarm_sound", nullable = false)
     private String alarmSound;
 
+    @Column(name = "theme", nullable = false)
+    private String theme;
+
     public boolean isMute() {
         return mute;
     }
@@ -47,4 +50,13 @@ public class TimerPreference {
     public void setAlarmSound(String alarmSound) {
         this.alarmSound = alarmSound;
     }
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
 }
+

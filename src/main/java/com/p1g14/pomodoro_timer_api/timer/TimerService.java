@@ -23,7 +23,6 @@ public class TimerService {
 
     private final TimerMapper timerMapper;
 
-
     public List<TimerDetailsResponse> getUserTimers() {
         User user = validator.getCurrentUser();
 
