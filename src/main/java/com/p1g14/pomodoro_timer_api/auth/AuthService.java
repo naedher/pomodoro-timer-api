@@ -7,6 +7,10 @@ import com.p1g14.pomodoro_timer_api.config.JwtService;
 
 import com.p1g14.pomodoro_timer_api.exception.EmailAlreadyExistsException;
 
+import com.p1g14.pomodoro_timer_api.preferences.Preference;
+import com.p1g14.pomodoro_timer_api.preferences.PreferenceRepository;
+import com.p1g14.pomodoro_timer_api.preferences.PreferencesMapper;
+import com.p1g14.pomodoro_timer_api.preferences.dto.PreferenceUpdateRequest;
 import com.p1g14.pomodoro_timer_api.timer.Timer;
 import com.p1g14.pomodoro_timer_api.timer.TimerMapper;
 import com.p1g14.pomodoro_timer_api.timer.TimerRepository;
@@ -38,6 +42,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final TimerRepository timerRepository;
     private final TimerMapper timerMapper;
+    private final PreferenceRepository preferenceRepository;
 
     /**
      * Register a new user
@@ -55,10 +60,15 @@ public class AuthService {
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
+
+        Preference preference = new Preference();
+        preference.setUser(user);
+        setDefaultPreferences(preference);
+        preferenceRepository.save(preference);
+        
         setDefaultTimers(user);
 
         String jwt = jwtService.generateToken(user);
-
         return new AuthResponse(jwt);
     }
 
@@ -118,5 +128,11 @@ public class AuthService {
             timer.setCreatedAt(now);
             timerRepository.save(timer);
         }
+    }
+
+    public void setDefaultPreferences(Preference preference) {
+        preference.setMute(false);
+        preference.setAlarmSound("alarm1.wav");
+        preference.setTheme("light");
     }
 }

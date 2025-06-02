@@ -1,5 +1,6 @@
 package com.p1g14.pomodoro_timer_api.user;
 
+import com.p1g14.pomodoro_timer_api.preferences.Preference;
 import com.p1g14.pomodoro_timer_api.timer.Timer;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,6 +36,10 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private Set<Timer> timers;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn 
+    private Preference preference;
 
     /**
      * Returns the authorities granted to the user.
