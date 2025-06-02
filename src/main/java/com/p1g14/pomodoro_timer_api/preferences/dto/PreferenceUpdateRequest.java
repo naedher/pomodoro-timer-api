@@ -1,4 +1,4 @@
-package com.p1g14.pomodoro_timer_api.timer.dto;
+package com.p1g14.pomodoro_timer_api.preferences.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,10 +8,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class TimerPreferenceDTO {
+@AllArgsConstructor
+@NoArgsConstructor
+public class PreferenceUpdateRequest {
     @NotNull
     private Boolean mute;
 
