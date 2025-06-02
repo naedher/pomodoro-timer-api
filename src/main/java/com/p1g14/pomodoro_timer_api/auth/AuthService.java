@@ -133,5 +133,6 @@ public class AuthService {
     public void setDefaultPreferences(Preference preference) {
         preference.setMute(false);
         preference.setAlarmSound("alarm1.wav");
+        preference.setTheme("light");
     }
 }
