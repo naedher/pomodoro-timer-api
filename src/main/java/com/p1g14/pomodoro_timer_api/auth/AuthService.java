@@ -96,6 +96,8 @@ public class AuthService {
      * Create default timers for a user
      * @param user the user to create timers for
      */
+
+    // it should be in another clas
     public void setDefaultTimers (User user){
         List<TimerCreateRequest> presets = List.of(
                 TimerCreateRequest.builder()
@@ -130,6 +132,7 @@ public class AuthService {
         }
     }
 
+    // it should be in another clas
     public void setDefaultPreferences(Preference preference) {
         preference.setMute(false);
         preference.setAlarmSound("alarm1.wav");
