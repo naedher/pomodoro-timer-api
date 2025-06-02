@@ -26,10 +26,10 @@ public class Preference {
     @Column(nullable = false)
     private boolean mute;
 
-    @Column(name = "alarm_sound", nullable = false)
+    @Column(nullable = false)
     private String alarmSound;
 
-    @Column(name = "theme", nullable = false)
+    @Column(nullable = false)
     private String theme;
 }
 
