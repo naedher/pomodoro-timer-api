@@ -38,6 +38,7 @@ public class User implements UserDetails {
     private Set<Timer> timers;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn 
     private Preference preference;
 
     /**
