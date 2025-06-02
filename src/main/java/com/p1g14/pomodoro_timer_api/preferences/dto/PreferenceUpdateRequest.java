@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PreferenceUpdateRequest {
     @NotNull
-    private Boolean mute;
+    private boolean mute;
 
     @NotBlank
     private String alarmSound;
